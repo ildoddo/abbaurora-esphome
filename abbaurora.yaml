@@ -16,8 +16,8 @@ esphome:
 #  baud_rate: 19200
 
 wifi:
-  ssid: "wifiot"
-  password: "00aa11bb22cc33dd44ee55"
+  ssid: "WIFISSID"
+  password: "***************"
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
