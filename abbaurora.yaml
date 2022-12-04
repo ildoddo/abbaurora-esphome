@@ -1,0 +1,81 @@
+esphome:
+  name: abbaurora
+  platform: ESP8266
+  board: nodemcuv2
+  includes:
+    - abbaurora/src/my_custom_sensor.h
+    - abbaurora/src/ABBAurora.cpp
+    - abbaurora/src/ABBAuroraEnums.h
+    - abbaurora/src/ABBAuroraStrings.h
+  libraries:
+    - "Wire"
+
+#uart:
+#  tx_pin: GPIO1
+#  rx_pin: GPIO3
+#  baud_rate: 19200
+
+wifi:
+  ssid: "wifiot"
+  password: "00aa11bb22cc33dd44ee55"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Abbaurora Fallback Hotspot"
+    password: "loDS8LCal7D1"
+
+captive_portal:
+
+# Enable logging
+logger:
+  level: DEBUG
+  hardware_uart: UART1
+# Enable Home Assistant API
+api:
+
+ota:
+
+# Example configuration entry
+sensor:
+- platform: custom
+  lambda: |-
+    auto my_sensor = new MyCustomSensor();
+    App.register_component(my_sensor);
+    return {my_sensor->power_sensor, my_sensor->power_sensor1, my_sensor->power_sensor2, my_sensor->voltage_sensor1, my_sensor->voltage_sensor2, my_sensor->energy_sensorD, my_sensor->energy_sensorT};
+
+  sensors:
+  - name: "fv_power"
+    unit_of_measurement: W
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: power
+  - name: "fv_pin1"
+    unit_of_measurement: W
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: power
+  - name: "fv_pin2"
+    unit_of_measurement: W
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: power
+  - name: "fv_voltage1"
+    unit_of_measurement: V
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: voltage
+  - name: "fv_voltage2"
+    unit_of_measurement: V
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: voltage
+  - name: "fv_energy_day"
+    unit_of_measurement: kWh
+    accuracy_decimals: 3
+    state_class: total_increasing
+    device_class: energy
+  - name: "fv_energy_total"
+    unit_of_measurement: kWh
+    accuracy_decimals: 2
+    state_class: total_increasing
+    device_class: energy
