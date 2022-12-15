@@ -7,17 +7,14 @@ esphome:
     - abbaurora/src/ABBAurora.cpp
     - abbaurora/src/ABBAuroraEnums.h
     - abbaurora/src/ABBAuroraStrings.h
+    - abbaurora/src/ABBAuroraStrings.cpp
+    - abbaurora/src/my_custom_text_sensor.h
   libraries:
     - "Wire"
 
-#uart:
-#  tx_pin: GPIO1
-#  rx_pin: GPIO3
-#  baud_rate: 19200
-
 wifi:
-  ssid: "WIFISSID"
-  password: "***************"
+  ssid: "wifiot"
+  password: "00aa11bb22cc33dd44ee55"
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
@@ -41,41 +38,133 @@ sensor:
   lambda: |-
     auto my_sensor = new MyCustomSensor();
     App.register_component(my_sensor);
-    return {my_sensor->power_sensor, my_sensor->power_sensor1, my_sensor->power_sensor2, my_sensor->voltage_sensor1, my_sensor->voltage_sensor2, my_sensor->energy_sensorD, my_sensor->energy_sensorT};
+    return {my_sensor->power_sensor,\
+            my_sensor->voltage_sensor,\
+            my_sensor->current_sensor,\
+            my_sensor->frequency_sensor,\
+            my_sensor->riso_sensor,\
+            my_sensor->ileak_sensor,\
+            my_sensor->powerpeak_sensor,\
+            my_sensor->powerpeaktoday_sensor,\
+            my_sensor->tempinverter_sensor,\
+            my_sensor->tempbooster_sensor,\
+            my_sensor->power_sensor1,\
+            my_sensor->power_sensor2,\
+            my_sensor->voltage_sensor1,\
+            my_sensor->voltage_sensor2,\
+            my_sensor->current_sensor1,\
+            my_sensor->current_sensor2,\
+            my_sensor->energy_sensorD,\
+            my_sensor->energy_sensorT};
 
   sensors:
-  - name: "fv_power"
+  - name: "PV Total Output Power"
     unit_of_measurement: W
     accuracy_decimals: 2
     state_class: measurement
     device_class: power
-  - name: "fv_pin1"
-    unit_of_measurement: W
-    accuracy_decimals: 2
-    state_class: measurement
-    device_class: power
-  - name: "fv_pin2"
-    unit_of_measurement: W
-    accuracy_decimals: 2
-    state_class: measurement
-    device_class: power
-  - name: "fv_voltage1"
+  - name: "Grid Voltage"
     unit_of_measurement: V
     accuracy_decimals: 2
     state_class: measurement
     device_class: voltage
-  - name: "fv_voltage2"
+  - name: "Grid Current"
+    unit_of_measurement: A
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: current
+  - name: "Grid Frequency"
+    unit_of_measurement: Hz
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: frequency
+  - name: "Isolation resistance (Riso)"
+    #unit_of_measurement: W
+    accuracy_decimals: 2
+    state_class: measurement
+    #device_class: power
+  - name: "Inverter Leak Current"
+    unit_of_measurement: A
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: current
+  - name: "Power Peak Ever"
+    unit_of_measurement: W
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: power
+  - name: "Power Peak Today"
+    unit_of_measurement: W
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: power
+  - name: "Inverter Temperature"
+    unit_of_measurement: °C
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: temperature
+  - name: "Booster Temperature"
+    unit_of_measurement: °C
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: temperature
+  - name: "String 1 Power"
+    unit_of_measurement: W
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: power
+  - name: "String 2 Power"
+    unit_of_measurement: W
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: power
+  - name: "String 1 Voltage"
     unit_of_measurement: V
     accuracy_decimals: 2
     state_class: measurement
     device_class: voltage
-  - name: "fv_energy_day"
+  - name: "String 2 Voltage"
+    unit_of_measurement: V
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: voltage
+  - name: "String 1 Current"
+    unit_of_measurement: A
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: current
+  - name: "String 2 Current"
+    unit_of_measurement: A
+    accuracy_decimals: 2
+    state_class: measurement
+    device_class: current
+  - name: "PV Cumulated Daily Energy"
     unit_of_measurement: kWh
     accuracy_decimals: 3
     state_class: total_increasing
     device_class: energy
-  - name: "fv_energy_total"
+  - name: "PV Cumulated Lifetime Energy"
     unit_of_measurement: kWh
     accuracy_decimals: 2
     state_class: total_increasing
     device_class: energy
+
+text_sensor:
+- platform: custom
+  lambda: |-
+    auto my_custom_sensor = new MyCustomTextSensor();
+    App.register_component(my_custom_sensor);
+    return {my_custom_sensor->versione_tsensor,\
+            my_custom_sensor->inverterState_tsensor,\
+            my_custom_sensor->globalState_tsensor,\
+            my_custom_sensor->channel1_tsensor,\
+            my_custom_sensor->channel2_tsensor,\
+            my_custom_sensor->alarm_tsensor};
+
+  text_sensors:
+  - name: "Model"
+  - name: "Inverter State"
+  - name: "Global State"
+  - name: "DCDC String 1 State"
+  - name: "DCDC String 2 State"
+  - name: "Alarm"
