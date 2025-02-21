@@ -1,10 +1,9 @@
 esphome:
   name: abbaurora
-  platform: ESP8266
-  board: nodemcuv2
   includes:
     - abbaurora/src/my_custom_sensor.h
     - abbaurora/src/ABBAurora.cpp
+    - abbaurora/src/ABBAurora.h
     - abbaurora/src/ABBAuroraEnums.h
     - abbaurora/src/ABBAuroraStrings.h
     - abbaurora/src/ABBAuroraStrings.cpp
@@ -12,10 +11,12 @@ esphome:
   libraries:
     - "Wire"
 
-wifi:
-  ssid: "*******"
-  password: "********"
+esp8266:
+  board: nodemcuv2
 
+wifi:
+  ssid: !secret wifi_ssid1
+  password: !secret wifi_password1
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "Abbaurora Fallback Hotspot"
@@ -30,7 +31,8 @@ logger:
 # Enable Home Assistant API
 api:
 
-ota:
+ota: 
+  platform: esphome
 
 # Example configuration entry
 sensor:
